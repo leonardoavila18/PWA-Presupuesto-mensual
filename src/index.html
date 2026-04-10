@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FinanzApp - Control de Gastos</title>
+    <link rel="stylesheet" href="./css/style.css" />
+    <meta name="theme-color" content="#2ecc71" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>App de finanzas</h1>
+      <div id="status-online" class="status-dot"></div>
+    </header>
+
+    <main>
+      <section class="card summary">
+        <h2>Presupuesto Mensual</h2>
+        <div class="budget-info">
+          <div>
+            <p class="label">Presupuesto</p>
+            <p id="total-budget">$0.00</p>
+          </div>
+          <div>
+            <p class="label">Gastado</p>
+            <p id="total-spent" class="negative">$0.00</p>
+          </div>
+        </div>
+        <div class="set-budget">
+          <input
+            type="text"
+            id="budget-input"
+            placeholder="Ingresa presupuesto que vas a tener durante el mes"
+            required
+          />
+          <button id="set-budget-btn" class="btn-primary">
+            Establecer Presupuesto
+          </button>
+          <button id="reset-budget-btn" class="btn-secondary">
+            Resetear Presupuesto
+          </button>
+        </div>
+        <div class="progress-bar">
+          <div id="progress-fill"></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h3>Registrar Gasto</h3>
+        <form id="expense-form">
+          <input type="text" id="amount" placeholder="Monto ($)" required />
+          <select id="category" required>
+            <option value="" disabled selected>Categoría</option>
+            <option value="comida">Comida</option>
+            <option value="ropa">Ropa</option>
+            <option value="transporte">Transporte</option>
+            <option value="entretenimiento">Entretenimiento</option>
+            <option value="ocio">Ocio</option>
+            <option value="salud">Salud</option>
+            <option value="educación">Educación</option>
+            <option value="servicios">Servicios</option>
+            <option value="otros">Otros</option>
+          </select>
+          <input type="date" id="date" required />
+          <button type="submit" class="btn-primary">Añadir Gasto</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <h3>Análisis de Gastos</h3>
+        <canvas id="expenseChart"></canvas>
+      </section>
+
+      <section class="card">
+        <h3>Reportes</h3>
+        <a href="./reporte-diario.html" class="btn-report"
+          >Ver Gastos por día</a
+        >
+        <a href="./reporte-pdf.html" class="btn-report btn-report-pdf"
+          >Exportar PDF del mes</a
+        >
+      </section>
+    </main>
+
+    <script src="./js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+  </body>
+</html>

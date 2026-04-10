@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gastos Diarios - FinanzApp</title>
+    <link rel="stylesheet" href="./css/style.css" />
+    <meta name="theme-color" content="#2ecc71" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>Gastos Diarios</h1>
+      <div id="status-online" class="status-dot"></div>
+    </header>
+
+    <main>
+      <section class="card">
+        <div class="report-header">
+          <button class="btn-back" onclick="history.back()">&#8592;</button>
+          <h2>Reporte del día</h2>
+        </div>
+
+        <div class="date-nav">
+          <button class="btn-nav" id="btn-prev">&#8249;</button>
+          <p class="report-date" id="report-date"></p>
+          <button class="btn-nav" id="btn-next" disabled>&#8250;</button>
+        </div>
+
+        <div id="empty-state" class="empty-state" style="display: none">
+          No hay gastos registrados para este día.
+        </div>
+
+        <table class="category-table" id="category-table" style="display: none">
+          <thead>
+            <tr>
+              <th>Categoría</th>
+              <th style="text-align: right">Total</th>
+            </tr>
+          </thead>
+          <tbody id="category-body"></tbody>
+          <tfoot>
+            <tr class="total-row">
+              <td>Total gastado</td>
+              <td id="total-dia" style="text-align: right"></td>
+            </tr>
+          </tfoot>
+        </table>
+      </section>
+
+      <section class="card" id="chart-card" style="display: none">
+        <h3>Distribución por categoría</h3>
+        <canvas id="dailyChart"></canvas>
+      </section>
+    </main>
+
+    <script>
+      window.addEventListener("online", () => {
+        document.getElementById("status-online").style.background = "#27ae60";
+      });
+      window.addEventListener("offline", () => {
+        document.getElementById("status-online").style.background = "#e74c3c";
+      });
+
+      const CATEGORIAS = [
+        { key: "comida", label: "Comida", color: "#f1c40f" },
+        { key: "ropa", label: "Ropa", color: "#1abc9c" },
+        { key: "transporte", label: "Transporte", color: "#e67e22" },
+        { key: "entretenimiento", label: "Entretenimiento", color: "#2ecc71" },
+        { key: "ocio", label: "Ocio", color: "#9b59b6" },
+        { key: "salud", label: "Salud", color: "#e74c3c" },
+        { key: "educación", label: "Educación", color: "#95a5a6" },
+        { key: "servicios", label: "Servicios", color: "#34495e" },
+        { key: "otros", label: "Otros", color: "#7f8c8d" },
+      ];
+
+      function formatMonto(valor) {
+        return (
+          "$" +
+          valor.toLocaleString("es-CO", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })
+        );
+      }
+
+      function getFechaHoy() {
+        const hoy = new Date();
+        const y = hoy.getFullYear();
+        const m = String(hoy.getMonth() + 1).padStart(2, "0");
+        const d = String(hoy.getDate()).padStart(2, "0");
+        return `${y}-${m}-${d}`;
+      }
+
+      function formatearFechaLegible(fechaISO) {
+        const [y, m, d] = fechaISO.split("-");
+        const meses = [
+          "enero",
+          "febrero",
+          "marzo",
+          "abril",
+          "mayo",
+          "junio",
+          "julio",
+          "agosto",
+          "septiembre",
+          "octubre",
+          "noviembre",
+          "diciembre",
+        ];
+        const hoy = getFechaHoy();
+        const ayer = offsetFecha(hoy, -1);
+        if (fechaISO === hoy)
+          return `Hoy — ${parseInt(d)} de ${meses[parseInt(m) - 1]} de ${y}`;
+        if (fechaISO === ayer)
+          return `Ayer — ${parseInt(d)} de ${meses[parseInt(m) - 1]} de ${y}`;
+        return `${parseInt(d)} de ${meses[parseInt(m) - 1]} de ${y}`;
+      }
+
+      function offsetFecha(fechaISO, offsetDias) {
+        const [y, m, d] = fechaISO.split("-").map(Number);
+        const fecha = new Date(y, m - 1, d);
+        fecha.setDate(fecha.getDate() + offsetDias);
+        const ny = fecha.getFullYear();
+        const nm = String(fecha.getMonth() + 1).padStart(2, "0");
+        const nd = String(fecha.getDate()).padStart(2, "0");
+        return `${ny}-${nm}-${nd}`;
+      }
+
+      let miGrafico = null;
+      let fechaActual = getFechaHoy();
+      const todosGastos = JSON.parse(localStorage.getItem("gastos")) || [];
+
+      function fechaMinGastos() {
+        if (todosGastos.length === 0) return getFechaHoy();
+        return todosGastos.map((g) => g.date).sort()[0];
+      }
+
+      function renderReporte(fechaISO) {
+        document.getElementById("report-date").textContent =
+          formatearFechaLegible(fechaISO);
+
+        const hoy = getFechaHoy();
+        document.getElementById("btn-next").disabled = fechaISO >= hoy;
+
+        const fechaMin = fechaMinGastos();
+        document.getElementById("btn-prev").disabled = fechaISO <= fechaMin;
+
+        const gastosDia = todosGastos.filter((g) => g.date === fechaISO);
+
+        document.getElementById("category-body").innerHTML = "";
+        document.getElementById("category-table").style.display = "none";
+        document.getElementById("chart-card").style.display = "none";
+        document.getElementById("empty-state").style.display = "none";
+
+        if (gastosDia.length === 0) {
+          document.getElementById("empty-state").style.display = "block";
+          if (miGrafico) {
+            miGrafico.destroy();
+            miGrafico = null;
+          }
+          return;
+        }
+
+        const totales = {};
+        gastosDia.forEach((g) => {
+          totales[g.categoria] = (totales[g.categoria] || 0) + g.monto;
+        });
+        const totalDia = gastosDia.reduce((acc, g) => acc + g.monto, 0);
+
+        const tbody = document.getElementById("category-body");
+        const categoriasConGasto = CATEGORIAS.filter((c) => totales[c.key] > 0);
+        categoriasConGasto.forEach((cat) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+                    <td>
+                        <span class="category-dot" style="background:${cat.color}"></span>
+                        ${cat.label}
+                    </td>
+                    <td>${formatMonto(totales[cat.key])}</td>
+                `;
+          tbody.appendChild(tr);
+        });
+
+        document.getElementById("total-dia").textContent =
+          formatMonto(totalDia);
+        document.getElementById("category-table").style.display = "table";
+
+        document.getElementById("chart-card").style.display = "block";
+        if (miGrafico) {
+          miGrafico.destroy();
+          miGrafico = null;
+        }
+        const ctx = document.getElementById("dailyChart").getContext("2d");
+        miGrafico = new Chart(ctx, {
+          type: "doughnut",
+          data: {
+            labels: categoriasConGasto.map((c) => c.label),
+            datasets: [
+              {
+                data: categoriasConGasto.map((c) => totales[c.key]),
+                backgroundColor: categoriasConGasto.map((c) => c.color),
+              },
+            ],
+          },
+          options: {
+            plugins: {
+              tooltip: {
+                callbacks: {
+                  label: function (context) {
+                    const value = context.parsed;
+                    const pct =
+                      totalDia > 0 ? ((value / totalDia) * 100).toFixed(1) : 0;
+                    return `${context.label}: ${formatMonto(value)} (${pct}%)`;
+                  },
+                },
+              },
+            },
+          },
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        renderReporte(fechaActual);
+
+        document.getElementById("btn-prev").addEventListener("click", () => {
+          fechaActual = offsetFecha(fechaActual, -1);
+          renderReporte(fechaActual);
+        });
+
+        document.getElementById("btn-next").addEventListener("click", () => {
+          fechaActual = offsetFecha(fechaActual, 1);
+          renderReporte(fechaActual);
+        });
+      });
+    </script>
+  </body>
+</html>

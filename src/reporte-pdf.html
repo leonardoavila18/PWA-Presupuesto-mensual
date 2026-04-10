@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exportar Reporte PDF - FinanzApp</title>
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="./css/reporte-pdf.css" />
+    <meta name="theme-color" content="#2ecc71" />
+  </head>
+  <body>
+    <header>
+      <h1>Exportar Reporte PDF</h1>
+      <div id="status-online" class="status-dot"></div>
+    </header>
+
+    <main>
+      <section class="card">
+        <div class="report-header">
+          <button class="btn-back" onclick="history.back()">&#8592;</button>
+          <h2>Reporte Mensual</h2>
+        </div>
+        <div class="month-selector">
+          <button class="btn-nav" id="btn-prev">&#8249;</button>
+          <span class="month-label" id="month-label"></span>
+          <button class="btn-nav" id="btn-next">&#8250;</button>
+        </div>
+        <button class="btn-primary" id="btn-generate">
+          Generar Vista Previa
+        </button>
+      </section>
+
+      <div id="preview-area">
+        <section class="card">
+          <h3 id="preview-title">Resumen del mes</h3>
+          <div class="summary-grid">
+            <div class="summary-item">
+              <div class="label">Presupuesto</div>
+              <div class="value" id="prev-budget">$0</div>
+            </div>
+            <div class="summary-item">
+              <div class="label">Total Gastado</div>
+              <div class="value spent" id="prev-spent">$0</div>
+            </div>
+            <div class="summary-item">
+              <div class="label">Disponible</div>
+              <div class="value" id="prev-available">$0</div>
+            </div>
+            <div class="summary-item">
+              <div class="label">% Utilizado</div>
+              <div class="value" id="prev-pct">0%</div>
+            </div>
+          </div>
+          <div class="progress-bar">
+            <div id="progress-fill-preview" style="width: 0%"></div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h3>Distribución por Categoría</h3>
+          <canvas id="monthlyChart"></canvas>
+        </section>
+
+        <section class="card">
+          <h3>Detalle por Categoría</h3>
+          <div id="table-empty" class="empty-state" style="display: none">
+            No hay gastos registrados en este mes.
+          </div>
+          <table class="category-table" id="cat-table" style="display: none">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Categoría</th>
+                <th style="text-align: right">Monto</th>
+              </tr>
+            </thead>
+            <tbody id="cat-body"></tbody>
+            <tfoot>
+              <tr class="total-row">
+                <td>Total</td>
+                <td id="cat-total" style="text-align: right"></td>
+                <td style="text-align: right">100%</td>
+              </tr>
+            </tfoot>
+          </table>
+        </section>
+
+        <section class="card">
+          <button class="btn-primary" id="btn-export">⬇Descargar PDF</button>
+          <div class="spinner" id="spinner">
+            Generando PDF, por favor espera...
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="./js/reporte-pdf.js"></script>
+  </body>
+</html>
