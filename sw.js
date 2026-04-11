@@ -1,4 +1,4 @@
-const CACHE_NAME = "v2_cache_gastos_financieros";
+const CACHE_NAME = "v3_cache_gastos_financieros";
 const urlsToCache = [
   "./",
   "./index.html",
@@ -9,7 +9,6 @@ const urlsToCache = [
   "./img/Finance_icon.ico", 
   "./img/icons/Finance_icon_192x192.jpg",
   "./img/icons/Finance_icon_512x512.jpg", 
-  "https://cdn.jsdelivr.net/npm/chart.js",
   "https://cdn.jsdelivr.net/npm/chart.js@3.9.1",
   "https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"
 ];
@@ -18,10 +17,8 @@ self.addEventListener("install", (e) => {
   e.waitUntil(
     caches
       .open(CACHE_NAME)
-      .then((cache) => {
-        return cache.addAll(urlsToCache);
-      })
-      .then(() => self.skipWaiting()),
+      .then((cache) => cache.addAll(urlsToCache))
+        .then(() => self.skipWaiting()),
   );
 });
 
