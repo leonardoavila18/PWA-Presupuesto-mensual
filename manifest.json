@@ -1,12 +1,12 @@
 {
   "name": "FinanzApp - Control de Gastos",
-  "short_name": "FinApp",
+  "short_name": "FinanzApp",
   "description": "App para establecer un presupuesto mensual y llevar control de los gastos diarios.",
   "start_url": "./index.html",
   "lang": "es-CO",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#3498db",
+  "theme_color": "#2ecc71",
   "orientation": "portrait",
   "icons": [
    {
