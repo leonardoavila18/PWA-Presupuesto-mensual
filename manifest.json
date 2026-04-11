@@ -28,7 +28,7 @@
       "description": "Acceso directo al reporte diario",
       "url": "reporte-diario.html",
       "icons": [
-        { "src": "img/icons/Finance_icon_192x192.png", "sizes": "192x192" }
+        { "src": "img/icons/Finance_icon_192x192.jpg", "sizes": "192x192" }
       ]
     }
   ]
