@@ -7,8 +7,8 @@ const urlsToCache = [
   "./js/app.js",
   "./manifest.json",
   "./img/Finance_icon.ico", 
-  "./img/icons/Finance_icon_192x192.png",
-  "./img/icons/Finance_icon_512x512.png", 
+  "./img/icons/Finance_icon_192x192.jpg",
+  "./img/icons/Finance_icon_512x512.jpg", 
   "https://cdn.jsdelivr.net/npm/chart.js",
   "https://cdn.jsdelivr.net/npm/chart.js@3.9.1",
   "https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"
