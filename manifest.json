@@ -9,7 +9,7 @@
   "theme_color": "#2ecc71",
   "orientation": "portrait",
   "icons": [
-   {
+    {
       "src": "img/icons/Finance_icon_192x192.jpg",
       "sizes": "192x192",
       "type": "image/png",
@@ -19,6 +19,17 @@
       "src": "img/icons/Finance_icon_512x512.jpg",
       "sizes": "512x512",
       "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Ver Gastos Diarios",
+      "short_name": "Diario",
+      "description": "Acceso directo al reporte diario",
+      "url": "reporte-diario.html",
+      "icons": [
+        { "src": "img/icons/Finance_icon_192x192.png", "sizes": "192x192" }
+      ]
     }
   ]
 }
