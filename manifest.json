@@ -32,5 +32,6 @@
         { "src": "img/icons/Finance_icon_192x192.jpg", "sizes": "192x192" }
       ]
     }
-  ]
+  ],
+   "launch_handler": { "client_mode": "focus-existing" } 
 }
