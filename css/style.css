@@ -1,3 +1,13 @@
+@media (display-mode: window-controls-overlay) {
+  header {
+    padding-top: env(titlebar-area-y);
+    height: calc(env(titlebar-area-height) + 20px);
+  }
+  .contenedor-principal {
+    margin-top: env(titlebar-area-height);
+  }
+}
+
 :root {
     --primary: #2ecc71;
     --secondary: #3498db;
