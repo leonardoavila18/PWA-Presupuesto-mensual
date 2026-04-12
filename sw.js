@@ -1,4 +1,4 @@
-const CACHE_NAME = "v5_cache_gastos_financieros";
+const CACHE_NAME = "v6_cache_gastos_financieros";
 const urlsToCache = [
   "./",
   "./index.html",
