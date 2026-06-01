@@ -1,125 +1,131 @@
 <!doctype html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FinanzApp - Control de Gastos</title>
-    <link rel="stylesheet" href="./css/style.css" />
-    <link rel="shortcut icon" type="image/ico" href="img/Finance_icon.ico" />
-    <link rel="manifest" href="manifest.json">
-        <!-- Android -->
-    <meta name="theme-color" content="#2ecc71">
 
-    <!-- IOS -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#2ecc71" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FinanzApp - Control de Gastos</title>
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="shortcut icon" type="image/ico" href="img/Finance_icon.ico" />
+  <link rel="manifest" href="manifest.json">
+  <!-- Android -->
+  <meta name="theme-color" content="#2ecc71">
 
-    <link rel="apple-touch-icon" href="img/icons/Finance_icon_192x192.jpg">
-    <link rel="apple-touch-icon" sizes="152x152" href="img/icons/Finance_icon_152x152.jpg">
-    <link rel="apple-touch-icon" sizes="180x180" href="img/icons/Finance_icon_192x192.jpg">
-    <link rel="apple-touch-icon" sizes="167x167" href="img/icons/Finance_icon_152x152.jpg">
+  <!-- IOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#2ecc71" />
 
-    <!-- iPhone X (1125px x 2436px) -->
-    <link rel="apple-touch-startup-image"
-        media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)"
-        href="img/icons-ios/Finance_icon_apple_1125x2436.png">
-    <!-- iPhone 8, 7, 6s, 6 (750px x 1334px) -->
-    <link rel="apple-touch-startup-image"
-        media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)"
-        href="img/icons-ios/Finance_icon_apple_750x1334.png">
-    <!-- iPhone 8 Plus, 7 Plus, 6s Plus, 6 Plus (1242px x 2208px) -->
-    <link rel="apple-touch-startup-image"
-        media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3)"
-        href="img/icons-ios/Finance_icon_apple_1242x2208.png">
-    <!-- iPhone 5 (640px x 1136px) -->
-    <link rel="apple-touch-startup-image"
-        media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)"
-        href="img/icons-ios/Finance_icon_apple_640x1136.png">
+  <link rel="apple-touch-icon" href="img/icons/Finance_icon_192x192.jpg">
+  <link rel="apple-touch-icon" sizes="152x152" href="img/icons/Finance_icon_152x152.jpg">
+  <link rel="apple-touch-icon" sizes="180x180" href="img/icons/Finance_icon_192x192.jpg">
+  <link rel="apple-touch-icon" sizes="167x167" href="img/icons/Finance_icon_152x152.jpg">
 
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <!-- iPhone X (1125px x 2436px) -->
+  <link rel="apple-touch-startup-image"
+    media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)"
+    href="img/icons-ios/Finance_icon_apple_1125x2436.png">
+  <!-- iPhone 8, 7, 6s, 6 (750px x 1334px) -->
+  <link rel="apple-touch-startup-image"
+    media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)"
+    href="img/icons-ios/Finance_icon_apple_750x1334.png">
+  <!-- iPhone 8 Plus, 7 Plus, 6s Plus, 6 Plus (1242px x 2208px) -->
+  <link rel="apple-touch-startup-image"
+    media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3)"
+    href="img/icons-ios/Finance_icon_apple_1242x2208.png">
+  <!-- iPhone 5 (640px x 1136px) -->
+  <link rel="apple-touch-startup-image"
+    media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)"
+    href="img/icons-ios/Finance_icon_apple_640x1136.png">
 
-    <meta name="apple-mobile-web-app-title" content="FinApp">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  </head>
-  <body>
-    <header>
-      <h1>App de finanzas</h1>
-      <div id="status-online" class="status-dot"></div>
-    </header>
+  <meta name="apple-mobile-web-app-title" content="FinApp">
 
-    <main>
-      <section class="card summary">
-        <h2>Presupuesto Mensual</h2>
-        <div class="budget-info">
-          <div>
-            <p class="label">Presupuesto</p>
-            <p id="total-budget">$0.00</p>
-          </div>
-          <div>
-            <p class="label">Gastado</p>
-            <p id="total-spent" class="negative">$0.00</p>
-          </div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+  <header>
+    <h1>App de finanzas</h1>
+    <div id="status-online" class="status-dot"></div>
+  </header>
+
+  <main>
+    <section class="card summary">
+      <h2>Presupuesto Mensual</h2>
+      <div class="budget-info">
+        <div>
+          <p class="label">Presupuesto</p>
+          <p id="total-budget">$0.00</p>
         </div>
-        <div class="set-budget">
-          <input
-            type="text"
-            id="budget-input"
-            placeholder="Ingresa presupuesto que vas a tener durante el mes"
-            required
-          />
-          <button id="set-budget-btn" class="btn-primary">
-            Establecer Presupuesto
-          </button>
-          <button id="reset-budget-btn" class="btn-secondary">
-            Resetear Presupuesto
-          </button>
+        <div>
+          <p class="label">Gastado</p>
+          <p id="total-spent" class="negative">$0.00</p>
         </div>
-        <div class="progress-bar">
-          <div id="progress-fill"></div>
-        </div>
-      </section>
+      </div>
+      <div class="set-budget">
+        <input type="text" id="budget-input" placeholder="Ingresa presupuesto que vas a tener durante el mes"
+          required />
+        <button id="set-budget-btn" class="btn-primary">
+          Establecer Presupuesto
+        </button>
+        <button id="reset-budget-btn" class="btn-secondary">
+          Resetear Presupuesto
+        </button>
+      </div>
+      <div class="progress-bar">
+        <div id="progress-fill"></div>
+      </div>
+    </section>
 
-      <section class="card">
-        <h3>Registrar Gasto</h3>
-        <form id="expense-form">
-          <input type="text" id="amount" placeholder="Monto ($)" required />
-          <select id="category" required>
-            <option value="" disabled selected>Categoría</option>
-            <option value="comida">Comida</option>
-            <option value="ropa">Ropa</option>
-            <option value="transporte">Transporte</option>
-            <option value="entretenimiento">Entretenimiento</option>
-            <option value="ocio">Ocio</option>
-            <option value="salud">Salud</option>
-            <option value="educación">Educación</option>
-            <option value="servicios">Servicios</option>
-            <option value="otros">Otros</option>
-          </select>
-          <input type="date" id="date" required />
-          <button type="submit" class="btn-primary">Añadir Gasto</button>
-        </form>
-      </section>
+    <section class="card">
+      <h3>Registrar Gasto</h3>
+      <form id="expense-form">
+        <input type="text" id="amount" placeholder="Monto ($)" required />
+        <select id="category" required>
+          <option value="" disabled selected>Categoría</option>
+          <option value="comida">Comida</option>
+          <option value="ropa">Ropa</option>
+          <option value="transporte">Transporte</option>
+          <option value="entretenimiento">Entretenimiento</option>
+          <option value="ocio">Ocio</option>
+          <option value="salud">Salud</option>
+          <option value="educación">Educación</option>
+          <option value="servicios">Servicios</option>
+          <option value="otros">Otros</option>
+        </select>
+        <input type="date" id="date" required />
+        <button type="submit" class="btn-primary">Añadir Gasto</button>
+      </form>
+    </section>
 
-      <section class="card">
-        <h3>Análisis de Gastos</h3>
-        <canvas id="expenseChart"></canvas>
-      </section>
+    <section class="card">
+      <h3>Análisis de Gastos</h3>
+      <div style="min-height: 250px;"> <canvas id="expenseChart"></canvas>
+      </div>
+    </section>
 
-      <section class="card">
-        <h3>Reportes</h3>
-        <a href="./reporte-diario.html" class="btn-report"
-          >Ver Gastos por día</a
-        >
-        <a href="./reporte-pdf.html" class="btn-report btn-report-pdf"
-          >Exportar PDF del mes</a
-        >
-      </section>
-    </main>
+    <section class="card">
+      <h3>Reportes</h3>
+      <nav style="display: flex; flex-direction: column; gap: 10px;">
+        <a href="./reporte-diario.html" class="btn-report">Ver Gastos por día</a>
+        <a href="./reporte-pdf.html" class="btn-report btn-report-pdf">Exportar PDF del mes</a>
+      </nav>
+    </section>
 
-    <script src="./js/app.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
-  </body>
+    <section id="install-banner" class="card"
+      style="display: none; border: 2px solid var(--primary); text-align: center;">
+      <p>¡Disfruta de una mejor experiencia!</p>
+      <button id="btn-install" class="btn-primary" style="margin-top: 10px;">
+        Instalar Aplicación
+      </button>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+  <script src="./js/app.js"></script>
+</body>
+
 </html>
