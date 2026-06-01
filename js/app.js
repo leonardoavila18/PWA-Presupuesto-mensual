@@ -13,7 +13,6 @@ let presupuestoDiario =
 let fechaPresupuesto = localStorage.getItem("fechaPresupuesto"); // formato "YYYY-MM"
 let miGrafico;
 
-
 const form = document.getElementById("expense-form");
 const totalSpentEl = document.getElementById("total-spent");
 const totalBudgetEl = document.getElementById("total-budget");
@@ -48,7 +47,6 @@ function validarTeclaNumerica(e) {
   const tecla = e.key;
   const valor = e.target.value;
 
-
   const teclasControl = [
     "Backspace",
     "Delete",
@@ -62,7 +60,6 @@ function validarTeclaNumerica(e) {
   ];
   if (teclasControl.includes(tecla)) return;
 
-
   if (
     (e.ctrlKey || e.metaKey) &&
     ["a", "c", "v", "x"].includes(tecla.toLowerCase())
@@ -73,7 +70,6 @@ function validarTeclaNumerica(e) {
     e.preventDefault();
     return;
   }
-
 
   if (!/^[0-9,]$/.test(tecla)) {
     e.preventDefault();
@@ -109,13 +105,11 @@ function formatearAlEscribir(e) {
   e.target.setSelectionRange(newPos, newPos);
 }
 
-
 budgetInput.addEventListener("keydown", validarTeclaNumerica);
 budgetInput.addEventListener("input", formatearAlEscribir);
 
 amountInput.addEventListener("keydown", validarTeclaNumerica);
 amountInput.addEventListener("input", formatearAlEscribir);
-
 
 document.addEventListener("DOMContentLoaded", () => {
   const mesActual = getMesActual();
@@ -315,3 +309,52 @@ window.addEventListener("offline", () => {
   document.getElementById("status-online").style.background = "#e74c3c";
   alert("Estás en modo offline. Los datos se guardarán localmente.");
 });
+
+const dbName = "MonitorRUM";
+let db;
+
+const request = indexedDB.open(dbName, 1);
+
+request.onupgradeneeded = (event) => {
+  db = event.target.result;
+  if (!db.objectStoreNames.contains("metricas")) {
+    db.createObjectStore("metricas", { keyPath: "id", autoIncrement: true });
+  }
+};
+
+request.onsuccess = (event) => {
+  db = event.target.result;
+  console.log("IndexedDB: Base de datos RUM lista.");
+};
+function guardarEnIndexedDB(data) {
+  if (!db) return;
+  const transaction = db.transaction(["metricas"], "readwrite");
+  const store = transaction.objectStore("metricas");
+  store.add(data);
+
+  transaction.oncomplete = () => {
+    console.log("Dato guardado en IndexedDB: ", data.nombre);
+  };
+}
+
+import { onCLS, onINP, onLCP } from "https://unpkg.com/web-vitals@3?module";
+function procesarMetrica({ name, delta, value, id }) {
+  const nuevaMetrica = {
+    nombre: name,
+    valor: value.toFixed(3),
+    delta: delta.toFixed(3),
+    id_sesion: id,
+    fecha: new Date().toISOString(),
+    url: window.location.pathname,
+  };
+
+  console.log(
+    `%c RUM [${name}]:`,
+    "color: #2ecc71; font-weight: bold;",
+    nuevaMetrica,
+  );
+  guardarEnIndexedDB(nuevaMetrica);
+}
+onCLS(procesarMetrica);
+onINP(procesarMetrica);
+onLCP(procesarMetrica);
